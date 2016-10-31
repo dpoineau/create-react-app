@@ -32,5 +32,6 @@
   },
   "peerDependencies": {
     "webpack": "^1.13.2"
-  }
+  },
+  "private": true
 }
