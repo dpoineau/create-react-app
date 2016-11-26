@@ -19,6 +19,7 @@ var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 var getClientEnvironment = require('./env');
 var paths = require('./paths');
+var combineLoaders = require('webpack-combine-loaders');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -111,6 +112,30 @@ module.exports = {
       }
     ],
     loaders: [
+      {
+        test: /\.(ts|tsx)$/,
+        include: paths.appSrc,
+        //loader: 'babel-loader!ts-loader',
+        loader: combineLoaders([{
+          loader: 'babel',
+          query: {
+            // @remove-on-eject-begin
+            babelrc: false,
+            presets: [require.resolve('babel-preset-react-app')],
+            // @remove-on-eject-end
+            // This is a feature of `babel-loader` for webpack (not Babel itself).
+            // It enables caching results in ./node_modules/.cache/react-scripts/
+            // directory for faster rebuilds. We use findCacheDir() because of:
+            // https://github.com/facebookincubator/create-react-app/issues/483
+            cacheDirectory: findCacheDir({
+              name: 'react-scripts'
+            })
+          }
+        },{
+          loader: 'ts'
+        }]),
+
+      },
       // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
