@@ -1,6 +1,6 @@
 {
   "name": "@dpoineau/react-scripts",
-  "version": "1.1.2",
+  "version": "1.1.2-alpha1",
   "description": "Configuration and scripts for Create React App.",
   "repository": "facebookincubator/create-react-app",
   "license": "BSD-3-Clause",
@@ -64,8 +64,11 @@
     "sass-loader": "^4.0.2",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
+    "ts-loader": "^1.2.2",
+    "typescript": "2.0.9",
     "url-loader": "0.5.7",
     "webpack": "1.13.2",
+    "webpack-combine-loaders": "^2.0.3",
     "webpack-dev-server": "1.16.2",
     "webpack-manifest-plugin": "1.1.0",
     "whatwg-fetch": "1.0.0"
