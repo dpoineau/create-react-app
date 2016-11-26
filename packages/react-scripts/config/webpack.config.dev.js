@@ -85,7 +85,7 @@ module.exports = {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx', ''],
+    extensions: ['.ts', '.tsx', '.js', '.json', '.jsx', ''],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -104,32 +104,44 @@ module.exports = {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
     preLoaders: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'eslint',
-        include: paths.appSrc,
-      }
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   loader: 'eslint',
+      //   include: paths.appSrc,
+      // }
     ],
     loaders: [
-      // Process JS with Babel.
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx|js|jsx)$/,
         include: paths.appSrc,
-        loader: 'babel',
+        loader: 'awesome-typescript',
         query: {
-          // @remove-on-eject-begin
-          babelrc: false,
-          presets: [require.resolve('babel-preset-react-app')],
-          // @remove-on-eject-end
-          // This is a feature of `babel-loader` for webpack (not Babel itself).
-          // It enables caching results in ./node_modules/.cache/react-scripts/
-          // directory for faster rebuilds. We use findCacheDir() because of:
-          // https://github.com/facebookincubator/create-react-app/issues/483
-          cacheDirectory: findCacheDir({
-            name: 'react-scripts'
-          })
+          useBabel: true,
+          //useCache: true,
+          babelOptions: {
+            presets: [require.resolve('babel-preset-react-app')]
+          }
         }
       },
+      // Process JS with Babel.
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   include: paths.appSrc,
+      //   loader: 'babel',
+      //   query: {
+      //     // @remove-on-eject-begin
+      //     babelrc: false,
+      //     presets: [require.resolve('babel-preset-react-app')],
+      //     // @remove-on-eject-end
+      //     // This is a feature of `babel-loader` for webpack (not Babel itself).
+      //     // It enables caching results in ./node_modules/.cache/react-scripts/
+      //     // directory for faster rebuilds. We use findCacheDir() because of:
+      //     // https://github.com/facebookincubator/create-react-app/issues/483
+      //     cacheDirectory: findCacheDir({
+      //       name: 'react-scripts'
+      //     })
+      //   }
+      // },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
       // "style" loader turns CSS into JS modules that inject <style> tags.
@@ -141,7 +153,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loader: "style!css!postcss!sass"
+        loader: "style!css?importLoaders=2!postcss!sass"
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.
