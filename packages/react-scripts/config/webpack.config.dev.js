@@ -118,7 +118,7 @@ module.exports = {
         loader: 'awesome-typescript',
         query: {
           useBabel: true,
-          //useCache: true,
+          useCache: true,
           babelOptions: {
             presets: [require.resolve('babel-preset-react-app')]
           }

@@ -90,7 +90,7 @@ module.exports = {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx', ''],
+    extensions: ['.ts', '.tsx', '.js', '.json', '.jsx', ''],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -109,25 +109,36 @@ module.exports = {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
     preLoaders: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'eslint',
-        include: paths.appSrc
-      }
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   loader: 'eslint',
+      //   include: paths.appSrc
+      // }
     ],
     loaders: [
-      // Process JS with Babel.
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx|js|jsx)$/,
         include: paths.appSrc,
-        loader: 'babel',
-        // @remove-on-eject-begin
+        loader: 'awesome-typescript',
         query: {
-          babelrc: false,
-          presets: [require.resolve('babel-preset-react-app')],
-        },
-        // @remove-on-eject-end
+          useBabel: true,
+          babelOptions: {
+            presets: [require.resolve('babel-preset-react-app')]
+          }
+        }
       },
+      // Process JS with Babel.
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   include: paths.appSrc,
+      //   loader: 'babel',
+      //   // @remove-on-eject-begin
+      //   query: {
+      //     babelrc: false,
+      //     presets: [require.resolve('babel-preset-react-app')],
+      //   },
+      //   // @remove-on-eject-end
+      // },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
