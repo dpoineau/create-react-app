@@ -9,7 +9,6 @@
  */
 // @remove-on-eject-end
 
-var path = require('path');
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -18,6 +17,11 @@ var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 var getClientEnvironment = require('./env');
 var paths = require('./paths');
+
+// @remove-on-eject-begin
+// `path` is not used after eject - see https://github.com/facebookincubator/create-react-app/issues/1174
+var path = require('path');
+// @remove-on-eject-end
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -129,24 +133,13 @@ module.exports = {
           /\.(ts|tsx|js|jsx)$/,
           /\.css$/,
           /\.scss$/,
-          /\.json$/
+          /\.json$/,
+          /\.svg$/
         ],
         loader: 'url',
         query: {
           limit: 10000,
           name: 'static/media/[name].[hash:8].[ext]'
-        }
-      },
-      {
-        test: /\.(ts|tsx|js|jsx)$/,
-        include: paths.appSrc,
-        loader: 'awesome-typescript',
-        query: {
-          useBabel: true,
-          useCache: true,
-          babelOptions: {
-            presets: [require.resolve('babel-preset-react-app')]
-          }
         }
       },
       // Process JS with Babel.
@@ -165,6 +158,18 @@ module.exports = {
       //       cacheDirectory: true
       //   }
       // },
+      {
+        test: /\.(ts|tsx|js|jsx)$/,
+        include: paths.appSrc,
+        loader: 'awesome-typescript',
+        query: {
+          useBabel: true,
+          useCache: true,
+          babelOptions: {
+            presets: [require.resolve('babel-preset-react-app')]
+          }
+        }
+      },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
       // "style" loader turns CSS into JS modules that inject <style> tags.
@@ -183,6 +188,14 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json'
+      },
+      // "file" loader for svg
+      {
+        test: /\.svg$/,
+        loader: 'file',
+        query: {
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
       }
     ]
   },
