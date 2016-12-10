@@ -169,10 +169,10 @@ module.exports = {
         include: paths.appSrc,
         loader: 'awesome-typescript',
         query: {
-          useBabel: false
-          // babelOptions: {
-          //   presets: [require.resolve('babel-preset-react-app')]
-          // }
+          useBabel: true,
+          babelOptions: {
+            presets: [require.resolve('babel-preset-react-app')]
+          }
         }
       },
       // The notation here is somewhat confusing.

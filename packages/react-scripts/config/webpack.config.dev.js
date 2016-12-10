@@ -163,11 +163,11 @@ module.exports = {
         include: paths.appSrc,
         loader: 'awesome-typescript',
         query: {
-          useBabel: false
-          // useCache: true,
-          // babelOptions: {
-          //   presets: [require.resolve('babel-preset-react-app')]
-          // }
+          useBabel: true,
+          useCache: true,
+          babelOptions: {
+            presets: [require.resolve('babel-preset-react-app')]
+          }
         }
       },
       // "postcss" loader applies autoprefixer to our CSS.
