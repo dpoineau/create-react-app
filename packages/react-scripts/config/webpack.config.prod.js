@@ -189,7 +189,7 @@ module.exports = {
       },
       {
         test: /\.module\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&modules=1!postcss!sass')
+        loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&modules=1&localIdentName=[local]___[hash:base64:5]!postcss!sass')
       },
       {
         test: /\.scss$/,

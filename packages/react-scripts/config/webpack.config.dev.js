@@ -181,7 +181,7 @@ module.exports = {
       },
       {
         test: /\.module\.scss$/,
-        loader: "style!css?importLoaders=2&modules=1!postcss!sass"
+        loader: "style!css?importLoaders=2&modules=1&localIdentName=[local]___[hash:base64:5]!postcss!sass"
       },
       {
         test: /\.scss$/,
