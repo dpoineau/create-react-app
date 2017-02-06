@@ -180,12 +180,12 @@ module.exports = {
         loader: 'style!css?importLoaders=1!postcss'
       },
       {
-        test: /\.module\.scss$/,
+        test: /\.scss$/,
+        exclude: /\.global\.scss$/,
         loader: "style!css?importLoaders=2&modules=1&localIdentName=[local]___[hash:base64:5]!postcss!sass"
       },
       {
-        test: /\.scss$/,
-        exclude: /\.module\.scss$/,
+        test: /\.global\.scss$/,
         loader: "style!css?importLoaders=2!postcss!sass"
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
