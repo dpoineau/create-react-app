@@ -18,6 +18,7 @@ var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
+var AppVersionEnv = require('./appVersionEnv');
 
 // @remove-on-eject-begin
 // `path` is not used after eject - see https://github.com/facebookincubator/create-react-app/issues/1174
@@ -50,7 +51,7 @@ var publicPath = ensureSlash(homepagePathname, true);
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
 var publicUrl = ensureSlash(homepagePathname, false);
 // Get environment variables to inject into our app.
-var env = getClientEnvironment(publicUrl);
+var env = AppVersionEnv.extendEnvironment(getClientEnvironment(publicUrl));
 
 // Assert this just to be safe.
 // Development builds of React are slow and not intended for production.
@@ -289,7 +290,10 @@ module.exports = {
     // having to parse `index.html`.
     new ManifestPlugin({
       fileName: 'asset-manifest.json'
-    })
+    }),
+
+    // For defining app version
+    AppVersionEnv.gitRevisionPlugin
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
