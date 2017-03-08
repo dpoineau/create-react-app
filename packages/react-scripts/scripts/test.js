@@ -33,7 +33,8 @@ var realWrite = process.stdout.write;
 var CLEAR = process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H';
 process.stdout.write = function(chunk, encoding, callback) {
   if (chunk === '\x1B[2J\x1B[H') {
-    chunk = CLEAR;
+    //chunk = CLEAR;
+    chunk = "";
   }
   return realWrite.call(this, chunk, encoding, callback);
 };
@@ -48,5 +49,6 @@ argv.push('--config', JSON.stringify(createJestConfig(
   path.resolve(paths.appSrc, '..'),
   false
 )));
+argv.push('--no-cache');
 // @remove-on-eject-end
 jest.run(argv);
