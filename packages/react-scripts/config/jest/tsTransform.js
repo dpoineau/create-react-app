@@ -6,7 +6,6 @@ const pathModule = require('path');
 const fs = require('fs-extra');
 
 const tsc = require(pathModule.resolve(paths.appNodeModules, 'typescript'));
-console.log("Typescript compiler version: " + tsc.version);
 
 module.exports = {
   process(src, path) {
