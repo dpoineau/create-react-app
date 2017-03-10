@@ -267,6 +267,7 @@ module.exports = {
         env.stringified
       )
     ),
+    new webpack.IgnorePlugin(/(locale)/, /node_modules.+(momentjs)/),
     // This helps ensure the builds are consistent if source hasn't changed:
     new webpack.optimize.OccurrenceOrderPlugin(),
     // Try to dedupe duplicated modules, if any:

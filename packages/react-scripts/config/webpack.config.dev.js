@@ -246,6 +246,7 @@ module.exports = {
         env.stringified
       )
     ),
+    new webpack.IgnorePlugin(/(locale)/, /node_modules.+(momentjs)/),
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
     // Watcher doesn't work well if you mistype casing in a path so we use
