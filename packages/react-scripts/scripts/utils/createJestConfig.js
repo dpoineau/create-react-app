@@ -27,8 +27,8 @@ module.exports = (resolve, rootDir, isEjecting) => {
     setupFiles: [resolve('config/polyfills.js')],
     setupTestFrameworkScriptFile: setupTestsFile,
     testMatch: [
-      '<rootDir>/src/**/__tests__/**/*.js?(x)',
-      '<rootDir>/src/**/?(*.)(spec|test).js?(x)',
+      '<rootDir>/src/**/__tests__/**/*.(js|ts)?(x)',
+      '<rootDir>/src/**/?(*.)(spec|test).(js|ts)?(x)',
     ],
     testEnvironment: 'node',
     testURL: 'http://localhost',
@@ -36,14 +36,15 @@ module.exports = (resolve, rootDir, isEjecting) => {
       '^.+\\.(js|jsx)$': isEjecting
         ? '<rootDir>/node_modules/babel-jest'
         : resolve('config/jest/babelTransform.js'),
-      '^.+\\.css$': resolve('config/jest/cssTransform.js'),
-      '^(?!.*\\.(js|jsx|css|json)$)': resolve('config/jest/fileTransform.js'),
+      '^.+\\.(ts|tsx)$': resolve('config/jest/tsTransform.js'),
+      '^.+\\.(css|scss)$': resolve('config/jest/cssTransform.js'),
+      '^(?!.*\\.(ts|tsx|js|jsx|css|json)$)': resolve('config/jest/fileTransform.js'),
     },
     transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
     moduleNameMapper: {
       '^react-native$': 'react-native-web',
     },
-    moduleFileExtensions: ['web.js', 'js', 'json', 'web.jsx', 'jsx'],
+    moduleFileExtensions: ['web.js', 'js', 'json', 'web.jsx', 'jsx', 'ts', 'tsx'],
   };
   if (rootDir) {
     config.rootDir = rootDir;
