@@ -207,14 +207,14 @@ module.exports = {
       // },
       {
         test: /\.(ts|tsx)$/,
-        include: paths.appSrc,
+        include: [paths.appSrc, paths.sharedSrc],
         loader: require.resolve('awesome-typescript-loader'),
         options: {
           useBabel: true,
           useCache: true,
           babelOptions: {
-            presets: [require.resolve('babel-preset-react-app')]
-          }
+            presets: [require.resolve('babel-preset-react-app')],
+          },
         },
       },
       // "postcss" loader applies autoprefixer to our CSS.
@@ -264,7 +264,7 @@ module.exports = {
             options: {
               importLoaders: 2,
               modules: true,
-              localIdentName: "[local]___[hash:base64:5]"
+              localIdentName: '[local]___[hash:base64:5]',
             },
           },
           {
@@ -288,8 +288,8 @@ module.exports = {
             },
           },
           {
-            loader: require.resolve('sass-loader')
-          }
+            loader: require.resolve('sass-loader'),
+          },
         ],
       },
       {
@@ -299,7 +299,7 @@ module.exports = {
           {
             loader: require.resolve('css-loader'),
             options: {
-              importLoaders: 2
+              importLoaders: 2,
             },
           },
           {
@@ -323,8 +323,8 @@ module.exports = {
             },
           },
           {
-            loader: require.resolve('sass-loader')
-          }
+            loader: require.resolve('sass-loader'),
+          },
         ],
       },
       // ** STOP ** Are you adding a new loader?
@@ -348,11 +348,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
-    new webpack.DefinePlugin(
-      AppVersionEnv.extendEnvironment(
-        env.stringified
-      )
-    ),
+    new webpack.DefinePlugin(AppVersionEnv.extendEnvironment(env.stringified)),
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
     // Watcher doesn't work well if you mistype casing in a path so we use
