@@ -38,13 +38,25 @@ module.exports = (resolve, rootDir, isEjecting) => {
         : resolve('config/jest/babelTransform.js'),
       '^.+\\.(ts|tsx)$': resolve('config/jest/tsTransform.js'),
       '^.+\\.(css|scss)$': resolve('config/jest/cssTransform.js'),
-      '^(?!.*\\.(ts|tsx|js|jsx|css|json)$)': resolve('config/jest/fileTransform.js'),
+      '^(?!.*\\.(ts|tsx|js|jsx|css|json)$)': resolve(
+        'config/jest/fileTransform.js'
+      ),
     },
-    transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+    transformIgnorePatterns: [
+      '[/\\\\]node_modules[/\\\\](?!@mangomint/app-shared[/]).+\\.(js|jsx)$',
+    ],
     moduleNameMapper: {
       '^react-native$': 'react-native-web',
     },
-    moduleFileExtensions: ['web.js', 'js', 'json', 'web.jsx', 'jsx', 'ts', 'tsx'],
+    moduleFileExtensions: [
+      'web.js',
+      'js',
+      'json',
+      'web.jsx',
+      'jsx',
+      'ts',
+      'tsx',
+    ],
   };
   if (rootDir) {
     config.rootDir = rootDir;
