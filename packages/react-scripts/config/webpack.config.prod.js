@@ -23,7 +23,6 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const AppVersionEnv = require('./appVersionEnv');
-const { CheckerPlugin } = require('awesome-typescript-loader');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -209,8 +208,8 @@ module.exports = {
         options: {
           useBabel: true,
           babelOptions: {
-            presets: [require.resolve('babel-preset-react-app')]
-          }
+            presets: [require.resolve('babel-preset-react-app')],
+          },
         },
       },
       // The notation here is somewhat confusing.
@@ -282,7 +281,7 @@ module.exports = {
                     modules: true,
                     minimize: true,
                     sourceMap: true,
-                    localIdentName: "[local]___[hash:base64:5]",
+                    localIdentName: '[local]___[hash:base64:5]',
                   },
                 },
                 {
@@ -306,7 +305,7 @@ module.exports = {
                   },
                 },
                 {
-                  loader: require.resolve('sass-loader')
+                  loader: require.resolve('sass-loader'),
                 },
               ],
             },
@@ -351,7 +350,7 @@ module.exports = {
                   },
                 },
                 {
-                  loader: require.resolve('sass-loader')
+                  loader: require.resolve('sass-loader'),
                 },
               ],
             },
@@ -392,11 +391,7 @@ module.exports = {
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
-    new webpack.DefinePlugin(
-      AppVersionEnv.extendEnvironment(
-        env.stringified
-      )
-    ),
+    new webpack.DefinePlugin(AppVersionEnv.extendEnvironment(env.stringified)),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -462,7 +457,7 @@ module.exports = {
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // For defining app version
-    AppVersionEnv.gitRevisionPlugin
+    AppVersionEnv.gitRevisionPlugin,
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
