@@ -47,7 +47,9 @@ module.exports = (resolve, rootDir, isEjecting) => {
       ),
     },
     transformIgnorePatterns: [
-      '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$',
+      // '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$',
+      // Customizing this to support transforming @mangomint packages (which we only compile to es6)
+      '[/\\\\]node_modules[/\\\\](?!@mangomint).+\\.(js|jsx|ts|tsx)$',
       '^.+\\.module\\.(css|sass|scss)$',
     ],
     moduleNameMapper: {

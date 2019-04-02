@@ -35,6 +35,8 @@ const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 // @remove-on-eject-end
 
+const AppVersionEnv = require('./appVersionEnv');
+
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
@@ -47,8 +49,9 @@ const useTypeScript = fs.existsSync(paths.appTsConfig);
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
-const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
+const sassRegex = /\.global\.(scss|sass)$/;
+// Mt change: we just use .scss (excluding .global.scss) for scss modules
+const sassModuleRegex = /\.(scss|sass)$/;
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
@@ -285,7 +288,8 @@ module.exports = function(webpackEnv) {
         // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
         // please link the files into your node_modules/ and let module-resolution kick in.
         // Make sure your source files are compiled, as they will not be processed in any way.
-        new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+        // Mt note: disable this as we import things like images from outside src
+        // new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
       ],
     },
     resolveLoader: {
@@ -302,28 +306,29 @@ module.exports = function(webpackEnv) {
         { parser: { requireEnsure: false } },
 
         // First, run the linter.
+        // Mt: Commenting this out as it doesn't seem to support all typescript syntax?
         // It's important to do this before Babel processes the JS.
-        {
-          test: /\.(js|mjs|jsx|ts|tsx)$/,
-          enforce: 'pre',
-          use: [
-            {
-              options: {
-                formatter: require.resolve('react-dev-utils/eslintFormatter'),
-                eslintPath: require.resolve('eslint'),
-                // @remove-on-eject-begin
-                baseConfig: {
-                  extends: [require.resolve('eslint-config-react-app')],
-                },
-                ignore: false,
-                useEslintrc: false,
-                // @remove-on-eject-end
-              },
-              loader: require.resolve('eslint-loader'),
-            },
-          ],
-          include: paths.appSrc,
-        },
+        // {
+        //   test: /\.(js|mjs|jsx|ts|tsx)$/,
+        //   enforce: 'pre',
+        //   use: [
+        //     {
+        //       options: {
+        //         formatter: require.resolve('react-dev-utils/eslintFormatter'),
+        //         eslintPath: require.resolve('eslint'),
+        //         // @remove-on-eject-begin
+        //         baseConfig: {
+        //           extends: [require.resolve('eslint-config-react-app')],
+        //         },
+        //         ignore: false,
+        //         useEslintrc: false,
+        //         // @remove-on-eject-end
+        //       },
+        //       loader: require.resolve('eslint-loader'),
+        //     },
+        //   ],
+        //   include: paths.appSrc,
+        // },
         {
           // "oneOf" will traverse all following loaders until one will
           // match the requirements. When no loader matches it will fall
@@ -461,11 +466,10 @@ module.exports = function(webpackEnv) {
               }),
             },
             // Opt-in support for SASS (using .scss or .sass extensions).
-            // By default we support SASS Modules with the
-            // extensions .module.scss or .module.sass
+            // Mt Note: we support SASS modules for all .scss files without .global.scss extension
             {
               test: sassRegex,
-              exclude: sassModuleRegex,
+              //exclude: sassModuleRegex,
               use: getStyleLoaders(
                 {
                   importLoaders: 2,
@@ -480,9 +484,10 @@ module.exports = function(webpackEnv) {
               sideEffects: true,
             },
             // Adds support for CSS Modules, but using SASS
-            // using the extension .module.scss or .module.sass
             {
+              // Mt note: customized the rules here to use modules for all .scss files by default, excluding .global.scss
               test: sassModuleRegex,
+              exclude: sassRegex,
               use: getStyleLoaders(
                 {
                   importLoaders: 2,
@@ -534,7 +539,7 @@ module.exports = function(webpackEnv) {
                   removeEmptyAttributes: true,
                   removeStyleLinkTypeAttributes: true,
                   keepClosingSlash: true,
-                  minifyJS: true,
+                  minifyJS: { output: { comments: 'some' } },
                   minifyCSS: true,
                   minifyURLs: true,
                 },
@@ -562,7 +567,11 @@ module.exports = function(webpackEnv) {
       // It is absolutely essential that NODE_ENV is set to production
       // during a production build.
       // Otherwise React will be compiled in the very slow development mode.
-      new webpack.DefinePlugin(env.stringified),
+      new webpack.DefinePlugin(
+        // Extend the built-in react variables passed with our app version hash
+        AppVersionEnv.extendEnvironment(env.stringified)
+      ),
+      AppVersionEnv.gitRevisionPlugin,
       // This is necessary to emit hot updates (currently CSS only):
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
       // Watcher doesn't work well if you mistype casing in a path so we use
