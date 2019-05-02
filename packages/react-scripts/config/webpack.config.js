@@ -46,6 +46,8 @@ const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
+// Check if index-ios.html exists
+const indexIosExists = fs.existsSync(paths.appIosHtml);
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -547,6 +549,36 @@ module.exports = function(webpackEnv) {
             : undefined
         )
       ),
+      // Mt override: Add an additional HtmlWebpackPlugin for index-ios.html (if it exists)
+      indexIosExists &&
+        isEnvProduction &&
+        new HtmlWebpackPlugin(
+          Object.assign(
+            {},
+            {
+              inject: true,
+              filename: 'index-ios.html',
+              template: paths.appIosHtml,
+            },
+            isEnvProduction
+              ? {
+                  minify: {
+                    removeComments: true,
+                    collapseWhitespace: false, // Mt change: don't collapse whitespace for this
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true,
+                    removeEmptyAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    keepClosingSlash: true,
+                    minifyJS: { output: { comments: 'some' } },
+                    minifyCSS: true,
+                    minifyURLs: true,
+                  },
+                }
+              : undefined
+          )
+        ),
+      // End Mt override
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       isEnvProduction &&
