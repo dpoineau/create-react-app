@@ -10,6 +10,9 @@ function extendEnvironment(environmentVars) {
   environmentVars['applicationBuildConfig.commitHash'] = JSON.stringify(
     gitRevisionPlugin.commithash()
   );
+  environmentVars['applicationBuildConfig.buildTimestamp'] = JSON.stringify(
+      new Date().toISOString()
+  );
   return environmentVars;
 }
 
