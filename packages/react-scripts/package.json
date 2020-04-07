@@ -1,6 +1,6 @@
 {
   "name": "@mangomint/react-scripts",
-  "version": "2.1.8-beta6",
+  "version": "2.1.8-beta7",
   "description": "Configuration and scripts for Create React App.",
   "repository": "facebook/create-react-app",
   "license": "MIT",
